@@ -39,7 +39,7 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
       </View>
 
       <View className="mt-2 pt-2 border-t border-gray-100">
-        <Text className="text-xs text-gray-500">
+        <Text className="text-xs text-gray-500 mb-1">
           Created: {formatDate(item.created_at)}
         </Text>
         {item.created_at !== item.updated_at && (
