@@ -207,34 +207,67 @@ export default function AddReturn() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-light-background dark:bg-dark-background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <View className="bg-white px-4 py-3 border-b border-gray-200">
+        <View
+          className="bg-light-card dark:bg-dark-card mx-4 mt-2 mb-4 rounded-2xl border border-light-border dark:border-dark-border shadow-xl p-4"
+          style={{
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 4,
+            },
+            shadowOpacity: 0.15,
+            shadowRadius: 12,
+            elevation: 8, // Android shadow
+          }}
+        >
           <View className="flex-row items-center justify-between">
-            <Text className="text-2xl font-bold text-gray-900">Add Return</Text>
-            <Pressable onPress={() => router.back()} className="px-3 py-1">
-              <Text className="text-blue-600 font-medium">Cancel</Text>
+            <Text className="text-2xl font-bold text-light-foreground dark:text-dark-foreground">
+              Add Return
+            </Text>
+            <Pressable
+              onPress={() => router.back()}
+              className="px-4 py-2 bg-light-background-secondary dark:bg-dark-background-secondary rounded-xl border border-light-border dark:border-dark-border active:opacity-80"
+            >
+              <Text className="text-light-foreground dark:text-dark-foreground font-medium">
+                Cancel
+              </Text>
             </Pressable>
           </View>
         </View>
 
         <ScrollView
-          className="flex-1 px-4 py-6"
+          className="flex-1 px-4"
           showsVerticalScrollIndicator={false}
         >
-          <View className="space-y-4">
+          <View
+            className="bg-light-card dark:bg-dark-card rounded-2xl border border-light-border dark:border-dark-border shadow-xl p-6 mb-6"
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowOpacity: 0.15,
+              shadowRadius: 12,
+              elevation: 8, // Android shadow
+            }}
+          >
             {/* Tracking Number Input */}
-            <View>
-              <Text className="text-sm font-medium text-gray-700 mb-2">
+            <View className="mb-6">
+              <Text className="text-sm font-semibold text-light-foreground dark:text-dark-foreground mb-3">
                 Tracking Number *
               </Text>
               <View className="flex-row items-center">
                 <TextInput
-                  className={`flex-1 mr-2 border rounded-lg px-4 py-3 text-gray-900 ${
-                    errors.tracking ? "border-red-500" : "border-gray-300"
+                  className={`flex-1 mr-3 bg-light-input dark:bg-dark-input border rounded-xl px-4 py-4 text-light-foreground dark:text-dark-foreground ${
+                    errors.tracking
+                      ? "border-light-error dark:border-dark-error"
+                      : "border-light-border dark:border-dark-border"
                   }`}
                   placeholder="Enter tracking number"
                   placeholderTextColor="#9CA3AF"
@@ -245,25 +278,20 @@ export default function AddReturn() {
                 />
                 <Pressable
                   onPress={openScanner}
-                  className="bg-blue-600 rounded-lg px-4 py-3 active:bg-blue-700"
+                  className="bg-light-primary dark:bg-dark-primary border border-light-border dark:border-dark-border rounded-xl px-4 py-4 active:opacity-80 shadow-lg"
                 >
-                  <Ionicons
-                    name="barcode-sharp"
-                    size={20}
-                    color="white"
-                    className="text-white font-medium text-center"
-                  />
+                  <Ionicons name="barcode-sharp" size={20} color="white" />
                 </Pressable>
               </View>
               {errors.tracking && (
-                <Text className="text-red-500 text-sm mt-1">
+                <Text className="text-light-error dark:text-dark-error text-sm mt-2 font-medium">
                   {errors.tracking}
                 </Text>
               )}
             </View>
 
             {/* Channel Dropdown */}
-            <View className="mt-4">
+            <View className="mb-3">
               <SimpleDropdown
                 label="Channel *"
                 placeholder="Select a channel"
@@ -289,27 +317,43 @@ export default function AddReturn() {
         </ScrollView>
 
         {/* Submit Button */}
-        <View className="bg-white px-4 py-3 border-t border-gray-200">
-          <Pressable
-            onPress={onSubmit}
-            disabled={submitting}
-            className={`rounded-lg py-4 items-center ${
-              submitting ? "bg-gray-400" : "bg-blue-600 active:bg-blue-700"
-            }`}
+        <View className="px-4 mb-4">
+          <View
+            className="bg-light-card dark:bg-dark-card rounded-2xl border border-light-border dark:border-dark-border shadow-xl p-6"
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowOpacity: 0.15,
+              shadowRadius: 12,
+              elevation: 8, // Android shadow
+            }}
           >
-            {submitting ? (
-              <View className="flex-row items-center">
-                <ActivityIndicator size="small" color="white" />
-                <Text className="text-white font-semibold ml-2">
-                  Creating...
+            <Pressable
+              onPress={onSubmit}
+              disabled={submitting}
+              className={`rounded-xl py-4 items-center shadow-lg ${
+                submitting
+                  ? "bg-light-background-muted dark:bg-dark-background-muted"
+                  : "bg-light-primary dark:bg-dark-primary active:opacity-80"
+              }`}
+            >
+              {submitting ? (
+                <View className="flex-row items-center">
+                  <ActivityIndicator size="small" color="white" />
+                  <Text className="text-light-primary-foreground dark:text-dark-primary-foreground font-bold ml-2 text-lg">
+                    Creating...
+                  </Text>
+                </View>
+              ) : (
+                <Text className="text-light-primary-foreground dark:text-dark-primary-foreground font-bold text-lg">
+                  Create Return
                 </Text>
-              </View>
-            ) : (
-              <Text className="text-white font-semibold text-lg">
-                Create Return
-              </Text>
-            )}
-          </Pressable>
+              )}
+            </Pressable>
+          </View>
         </View>
 
         {/* Barcode Scanner Modal */}

@@ -21,31 +21,43 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
   return (
     <Pressable
       onPress={() => onPress?.(item)}
-      className="bg-neutral-900 mx-4 mb-3 p-4 rounded-lg shadow-sm border border-neutral-500 active:bg-neutral-600"
+      className="bg-light-card dark:bg-dark-card mx-4 mb-4 p-6 rounded-2xl shadow-xl border border-light-border dark:border-dark-border active:opacity-80"
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+        elevation: 8, // Android shadow
+      }}
     >
-      <View className="flex-row justify-between items-center mb-2">
-        <Text className="text-lg font-semibold text-neutral-300 flex-1">
+      <View className="flex-row justify-between items-center mb-3">
+        <Text className="text-lg font-bold text-light-foreground dark:text-dark-foreground flex-1">
           {item.tracking}
         </Text>
-        <View className="bg-neutral-100 px-2 py-1 rounded">
-          <Text className="text-xs text-neutral-800 font-medium">
+        <View className="bg-light-primary dark:bg-dark-primary px-3 py-2 rounded-xl">
+          <Text className="text-xs text-light-primary-foreground dark:text-dark-primary-foreground font-semibold">
             {item.store.name}
           </Text>
         </View>
       </View>
 
-      <View className="mb-3">
-        <Text className="text-md text-neutral-400 mb-1">
-          {item.channel.name}
-        </Text>
+      <View className="mb-4">
+        <View className="bg-light-background-secondary dark:bg-dark-background-secondary px-3 py-2 rounded-lg border border-light-border dark:border-dark-border self-start">
+          <Text className="text-sm text-light-foreground dark:text-dark-foreground font-medium">
+            {item.channel.name}
+          </Text>
+        </View>
       </View>
 
-      <View className="mt-2 pt-2 border-t border-neutral-500">
-        <Text className="text-xs text-neutral-500 mb-1">
+      <View className="mt-2 pt-3 border-t border-light-border dark:border-dark-border">
+        <Text className="text-xs text-light-foreground-muted dark:text-dark-foreground-muted font-medium mb-1">
           Created: {formatDate(item.created_at)}
         </Text>
         {item.created_at !== item.updated_at && (
-          <Text className="text-xs text-neutral-500">
+          <Text className="text-xs text-light-foreground-muted dark:text-dark-foreground-muted font-medium">
             Updated: {formatDate(item.updated_at)}
           </Text>
         )}

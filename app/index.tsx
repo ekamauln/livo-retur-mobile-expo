@@ -116,7 +116,7 @@ export default function App() {
 
     return (
       <View className="py-4">
-        <ActivityIndicator size="small" color="#3B82F6" />
+        <ActivityIndicator size="small" color="#059669" />
       </View>
     );
   };
@@ -125,15 +125,19 @@ export default function App() {
     if (loading) return null;
 
     return (
-      <View className="flex-1 items-center justify-center py-8">
-        <Text className="text-gray-500 text-center text-lg">
-          {debouncedSearch
-            ? "No returns found for your search"
-            : "No returns found"}
-        </Text>
-        <Text className="text-gray-400 text-center mt-2">
-          {debouncedSearch ? "Try a different search term" : "Pull to refresh"}
-        </Text>
+      <View className="flex-1 items-center justify-center py-8 px-4">
+        <View className="bg-light-card dark:bg-dark-card rounded-2xl p-8 border border-light-border dark:border-dark-border shadow-xl">
+          <Text className="text-light-foreground dark:text-dark-foreground text-center text-lg font-semibold">
+            {debouncedSearch
+              ? "No returns found for your search"
+              : "No returns found"}
+          </Text>
+          <Text className="text-light-foreground-muted dark:text-dark-foreground-muted text-center mt-2">
+            {debouncedSearch
+              ? "Try a different search term"
+              : "Pull to refresh"}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -143,30 +147,52 @@ export default function App() {
   }, [fetchReturns]);
 
   return (
-    <SafeAreaView className="flex-1 bg-neutral-900">
-      <View className="bg-neutral-900 px-4 py-3 border-b border-neutral-800 mb-4">
-        <View className="flex-row items-center justify-between mb-3">
-          <Text className="text-2xl font-bold text-neutral-100">Returns</Text>
+    <SafeAreaView className="flex-1 bg-light-background dark:bg-dark-background">
+      <View
+        className="bg-light-card dark:bg-dark-card mx-4 mt-2 mb-4 rounded-2xl border border-light-border dark:border-dark-border shadow-xl p-4"
+        style={{
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.15,
+          shadowRadius: 12,
+          elevation: 8, // Android shadow
+        }}
+      >
+        <View className="flex-row items-center justify-between mb-4">
+          <Text className="text-3xl font-bold text-light-foreground dark:text-dark-foreground">
+            Returns
+          </Text>
           <Pressable
             onPress={() => router.push("./add-return" as any)}
-            className="px-4 py-2 bg-neutral-600 rounded-lg active:bg-neutral-700"
+            className="px-6 py-3 bg-light-primary dark:bg-dark-primary rounded-xl active:opacity-80 shadow-lg"
           >
-            <Text className="text-white font-medium">Add Return</Text>
+            <Text className="text-light-primary-foreground dark:text-dark-primary-foreground font-semibold">
+              Add Return
+            </Text>
           </Pressable>
         </View>
-        <TextInput
-          className="bg-neutral-800 px-4 py-3 rounded-lg text-neutral-500"
-          placeholder="Search returns..."
-          placeholderTextColor="#9CA3AF"
-          value={searchText}
-          onChangeText={setSearchText}
-        />
+        <View className="relative">
+          <TextInput
+            className="bg-light-input dark:bg-dark-input px-4 py-4 rounded-xl text-light-foreground dark:text-dark-foreground border border-light-border dark:border-dark-border"
+            placeholder="Search returns..."
+            placeholderTextColor="#9CA3AF"
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+        </View>
       </View>
 
       {loading && returns.length === 0 ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#3B82F6" />
-          <Text className="text-gray-500 mt-2">Loading returns...</Text>
+        <View className="flex-1 items-center justify-center px-4">
+          <View className="bg-light-card dark:bg-dark-card rounded-2xl p-8 border border-light-border dark:border-dark-border shadow-xl">
+            <ActivityIndicator size="large" color="#059669" />
+            <Text className="text-light-foreground-secondary dark:text-dark-foreground-secondary font-medium mt-4 text-center">
+              Loading returns...
+            </Text>
+          </View>
         </View>
       ) : (
         <FlatList
