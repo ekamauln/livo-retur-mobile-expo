@@ -35,7 +35,7 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
       </View>
 
       <View className="mb-3">
-        <Text className="text-md text-neutral-500 mb-1">
+        <Text className="text-md text-neutral-400 mb-1">
           {item.channel.name}
         </Text>
       </View>
