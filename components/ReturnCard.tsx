@@ -24,26 +24,28 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
       className="bg-neutral-900 mx-4 mb-3 p-4 rounded-lg shadow-sm border border-gray-500 active:bg-gray-50"
     >
       <View className="flex-row justify-between items-center mb-2">
-        <Text className="text-lg font-semibold text-gray-400 flex-1">
+        <Text className="text-lg font-semibold text-neutral-300 flex-1">
           {item.tracking}
         </Text>
-        <View className="bg-blue-100 px-2 py-1 rounded">
-          <Text className="text-xs text-blue-800 font-medium">
+        <View className="bg-neutral-100 px-2 py-1 rounded">
+          <Text className="text-xs text-neutral-800 font-medium">
             {item.store.name}
           </Text>
         </View>
       </View>
 
       <View className="mb-3">
-        <Text className="text-md text-gray-500 mb-1">{item.channel.name}</Text>
+        <Text className="text-md text-neutral-500 mb-1">
+          {item.channel.name}
+        </Text>
       </View>
 
-      <View className="mt-2 pt-2 border-t border-gray-100">
-        <Text className="text-xs text-gray-500 mb-1">
+      <View className="mt-2 pt-2 border-t border-neutral-500">
+        <Text className="text-xs text-neutral-500 mb-1">
           Created: {formatDate(item.created_at)}
         </Text>
         {item.created_at !== item.updated_at && (
-          <Text className="text-xs text-gray-500">
+          <Text className="text-xs text-neutral-500">
             Updated: {formatDate(item.updated_at)}
           </Text>
         )}
