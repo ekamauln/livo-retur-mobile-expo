@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -17,6 +17,7 @@ import { ReturnMobile } from "../lib/api/types";
 
 export default function App() {
   const router = useRouter();
+  const { refresh } = useLocalSearchParams();
   const [returns, setReturns] = useState<ReturnMobile[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -65,8 +66,7 @@ export default function App() {
           setHasMore(page < totalPages);
           setCurrentPage(page);
         }
-      } catch (error) {
-        console.error("Error fetching returns:", error);
+      } catch {
         Alert.alert("Error", "Failed to fetch returns. Please try again.");
       } finally {
         setLoading(false);
@@ -86,6 +86,18 @@ export default function App() {
     setHasMore(true);
     fetchReturns(1, true);
   }, [debouncedSearch, searchText, fetchReturns]);
+
+  // Handle refresh from navigation (when coming back from add-return)
+  useEffect(() => {
+    if (refresh === "true") {
+      setReturns([]);
+      setCurrentPage(1);
+      setHasMore(true);
+      fetchReturns(1, true);
+      // Clear the refresh parameter from the URL
+      router.replace("/");
+    }
+  }, [refresh, fetchReturns, router]);
 
   const handleLoadMore = useCallback(() => {
     if (!loadingMore && hasMore) {

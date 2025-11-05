@@ -1,6 +1,7 @@
 import { BarcodeScanningResult, Camera, CameraView } from "expo-camera";
+import { useColorScheme } from "nativewind";
 import React, { useEffect, useState } from "react";
-import { Alert, Modal, Pressable, Text, View } from "react-native";
+import { Alert, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface BarcodeScannerProps {
   onScan: (data: string) => void;
@@ -15,6 +16,31 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 }) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
+  const { colorScheme } = useColorScheme();
+
+  // Define theme colors based on current scheme
+  const colors = {
+    // Light theme colors
+    light: {
+      card: "#FFFFFF",
+      background: "#F8FAFC",
+      foreground: "#0F172A",
+      primary: "#059669",
+      primaryForeground: "#FFFFFF",
+      border: "#D1D5DB",
+    },
+    // Dark theme colors
+    dark: {
+      card: "#1E293B",
+      background: "#0F172A",
+      foreground: "#F1F5F9",
+      primary: "#34D399",
+      primaryForeground: "#1E293B",
+      border: "#374151",
+    },
+  };
+
+  const currentColors = colors[colorScheme === "dark" ? "dark" : "light"];
 
   useEffect(() => {
     const getCameraPermissions = async () => {
@@ -27,9 +53,6 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 
   const handleBarCodeScanned = ({ type, data }: BarcodeScanningResult) => {
     setScanned(true);
-    console.log(
-      `Bar code with type ${type} and data ${data} has been scanned!`
-    );
     onScan(data);
     onClose();
 
@@ -48,9 +71,9 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
-      <View className="absolute inset-0">
+      <View style={StyleSheet.absoluteFillObject}>
         <CameraView
-          className="absolute inset-0"
+          style={StyleSheet.absoluteFillObject}
           onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
           barcodeScannerSettings={{
             barcodeTypes: [
@@ -67,56 +90,118 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
         />
 
         {/* Full screen overlay with cutout for scanning area */}
-        <View className="absolute inset-0 bg-transparent">
+        <View style={styles.fullOverlay}>
           {/* Header */}
-          <View className="flex-row justify-between items-center px-5 pt-16 pb-5">
-            <View className="bg-light-card/80 dark:bg-dark-card/80 px-4 py-2 rounded-2xl backdrop-blur-lg border border-light-border/50 dark:border-dark-border/50 shadow-2xl">
-              <Text className="text-light-foreground dark:text-dark-foreground text-lg font-semibold">
+          <View style={styles.header}>
+            <View
+              style={[
+                styles.headerCard,
+                {
+                  backgroundColor: currentColors.card + "CC",
+                  borderColor: currentColors.border + "80",
+                },
+              ]}
+            >
+              <Text
+                style={[styles.headerTitle, { color: currentColors.primary }]}
+              >
                 Scan Barcode or QR Code
               </Text>
             </View>
             <Pressable
               onPress={onClose}
-              className="w-12 h-12 rounded-2xl bg-light-card/80 dark:bg-dark-card/80 justify-center items-center backdrop-blur-lg border border-light-border/50 dark:border-dark-border/50 shadow-2xl active:opacity-70"
+              style={[
+                styles.closeButton,
+                {
+                  backgroundColor: currentColors.card + "CC",
+                  borderColor: currentColors.border + "80",
+                },
+              ]}
             >
-              <Text className="text-light-foreground dark:text-dark-foreground text-xl font-bold">
+              <Text
+                style={[
+                  styles.closeButtonText,
+                  { color: currentColors.primary },
+                ]}
+              >
                 ✕
               </Text>
             </Pressable>
           </View>
 
           {/* Scanning frame with overlay */}
-          <View className="flex-1 justify-center items-center">
-            {/* Semi-transparent overlays */}
-            <View className="flex-1" />
-            <View className="flex-row h-64">
-              <View className="flex-1" />
-              <View className="w-64 h-64 relative border-0 bg-transparent">
-                {/* Corner indicators with glassmorphism */}
-                <View className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-light-primary dark:border-dark-primary rounded-tl-lg" />
-                <View className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-light-primary dark:border-dark-primary rounded-tr-lg" />
-                <View className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-light-primary dark:border-dark-primary rounded-bl-lg" />
-                <View className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-light-primary dark:border-dark-primary rounded-br-lg" />
+          <View style={styles.scanFrame}>
+            {/* Semi-transparent overlays to create cutout effect */}
+            <View style={styles.overlayTop} />
+            <View style={styles.overlayRow}>
+              <View style={styles.overlaySide} />
+              <View style={styles.scanningArea}>
+                {/* Corner indicators */}
+                <View
+                  style={[
+                    styles.scanCorner,
+                    styles.topLeft,
+                    { borderColor: currentColors.primary },
+                  ]}
+                />
+                <View
+                  style={[
+                    styles.scanCorner,
+                    styles.topRight,
+                    { borderColor: currentColors.primary },
+                  ]}
+                />
+                <View
+                  style={[
+                    styles.scanCorner,
+                    styles.bottomLeft,
+                    { borderColor: currentColors.primary },
+                  ]}
+                />
+                <View
+                  style={[
+                    styles.scanCorner,
+                    styles.bottomRight,
+                    { borderColor: currentColors.primary },
+                  ]}
+                />
 
-                {/* Scanning line with glow effect */}
-                <View className="absolute top-1/2 left-0 right-0 h-0.5 bg-light-primary dark:bg-dark-primary opacity-80 shadow-lg" />
-
-                {/* Glassmorphism frame overlay */}
-                <View className="absolute inset-0 rounded-2xl border-2 border-light-primary/30 dark:border-dark-primary/30 bg-light-card/10 dark:bg-dark-card/10 backdrop-blur-sm" />
+                {/* Scanning line */}
+                <View
+                  style={[
+                    styles.scanLine,
+                    { backgroundColor: currentColors.primary },
+                  ]}
+                />
               </View>
-              <View className="flex-1" />
+              <View style={styles.overlaySide} />
             </View>
-            <View className="flex-1" />
+            <View style={styles.overlayBottom} />
           </View>
 
-          {/* Instructions with glassmorphism */}
-          <View className="px-10 pb-16 items-center">
-            <View className="bg-light-card/80 dark:bg-dark-card/80 px-6 py-4 rounded-2xl backdrop-blur-lg border border-light-border/50 dark:border-dark-border/50 shadow-2xl">
-              <Text className="text-light-foreground dark:text-dark-foreground text-base text-center font-medium mb-2">
+          {/* Instructions */}
+          <View style={styles.instructions}>
+            <View
+              style={[
+                styles.instructionCard,
+                {
+                  backgroundColor: currentColors.card + "CC",
+                  borderColor: currentColors.border + "80",
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.instructionText,
+                  { color: currentColors.primary },
+                ]}
+              >
                 Position the barcode or QR code within the frame
               </Text>
               {scanned && (
-                <Text className="text-light-primary dark:text-dark-primary text-base font-semibold text-center">
+                <Text
+                  style={[styles.scannedText, { color: currentColors.primary }]}
+                >
                   Scanned successfully!
                 </Text>
               )}
@@ -127,3 +212,154 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  fullOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "transparent",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+  },
+  headerCard: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  closeButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  closeButtonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  scanFrame: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlayTop: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+  overlayRow: {
+    flexDirection: "row",
+    height: 256,
+  },
+  overlaySide: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+  overlayBottom: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+  scanningArea: {
+    width: 256,
+    height: 256,
+    position: "relative",
+    backgroundColor: "transparent",
+  },
+  scanCorner: {
+    position: "absolute",
+    width: 32,
+    height: 32,
+  },
+  topLeft: {
+    top: 0,
+    left: 0,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderTopLeftRadius: 8,
+  },
+  topRight: {
+    top: 0,
+    right: 0,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderTopRightRadius: 8,
+  },
+  bottomLeft: {
+    bottom: 0,
+    left: 0,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderBottomLeftRadius: 8,
+  },
+  bottomRight: {
+    bottom: 0,
+    right: 0,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderBottomRightRadius: 8,
+  },
+  scanLine: {
+    position: "absolute",
+    top: "50%",
+    left: 0,
+    right: 0,
+    height: 2,
+    opacity: 0.8,
+  },
+  instructions: {
+    paddingHorizontal: 40,
+    paddingBottom: 60,
+    alignItems: "center",
+  },
+  instructionCard: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  instructionText: {
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "500",
+    marginBottom: 8,
+  },
+  scannedText: {
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+});

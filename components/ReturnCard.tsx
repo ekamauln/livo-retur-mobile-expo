@@ -23,7 +23,7 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
       onPress={() => onPress?.(item)}
       className="bg-light-card dark:bg-dark-card mx-4 mb-4 p-6 rounded-2xl shadow-xl border border-light-border dark:border-dark-border active:opacity-80"
       style={{
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 4,
@@ -45,7 +45,7 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
       </View>
 
       <View className="mb-4">
-        <View className="bg-light-background-secondary dark:bg-dark-background-secondary px-3 py-2 rounded-lg border border-light-border dark:border-dark-border self-start">
+        <View className="bg-light-background-secondary dark:bg-dark-background-secondary px-3 py-2 rounded-lg border border-light-primary dark:border-dark-primary self-start">
           <Text className="text-sm text-light-foreground dark:text-dark-foreground font-medium">
             {item.channel.name}
           </Text>

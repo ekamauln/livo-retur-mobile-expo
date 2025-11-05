@@ -1,15 +1,15 @@
-import { 
-  FetchReturnsParams, 
-  ReturnMobileResponse, 
-  CreateReturnRequest, 
+import {
+  ChannelListResponse,
+  CreateReturnRequest,
   CreateReturnResponse,
-  FetchStoresParams,
   FetchChannelsParams,
+  FetchReturnsParams,
+  FetchStoresParams,
+  ReturnMobileResponse,
   StoreListResponse,
-  ChannelListResponse
 } from "./types";
 
-const BASE_URL = "http://192.168.31.136:8081/api/mobile";
+const BASE_URL = "http://192.168.31.50:8081/api/mobile";
 
 export const returnMobileApi = {
   async fetchReturns(
@@ -39,12 +39,13 @@ export const returnMobileApi = {
       const data: ReturnMobileResponse = await response.json();
       return data;
     } catch (error) {
-      console.error("Error fetching returns:", error);
       throw error;
     }
   },
 
-  async createReturn(request: CreateReturnRequest): Promise<CreateReturnResponse> {
+  async createReturn(
+    request: CreateReturnRequest
+  ): Promise<CreateReturnResponse> {
     try {
       const response = await fetch(`${BASE_URL}/returns`, {
         method: "POST",
@@ -61,12 +62,13 @@ export const returnMobileApi = {
       const data: CreateReturnResponse = await response.json();
       return data;
     } catch (error) {
-      console.error("Error creating return:", error);
       throw error;
     }
   },
 
-  async fetchStores(params: FetchStoresParams = {}): Promise<StoreListResponse> {
+  async fetchStores(
+    params: FetchStoresParams = {}
+  ): Promise<StoreListResponse> {
     const { search = "" } = params;
 
     const url = new URL(`${BASE_URL}/stores`);
@@ -89,12 +91,13 @@ export const returnMobileApi = {
       const data: StoreListResponse = await response.json();
       return data;
     } catch (error) {
-      console.error("Error fetching stores:", error);
       throw error;
     }
   },
 
-  async fetchChannels(params: FetchChannelsParams = {}): Promise<ChannelListResponse> {
+  async fetchChannels(
+    params: FetchChannelsParams = {}
+  ): Promise<ChannelListResponse> {
     const { search = "" } = params;
 
     const url = new URL(`${BASE_URL}/channels`);
@@ -117,7 +120,6 @@ export const returnMobileApi = {
       const data: ChannelListResponse = await response.json();
       return data;
     } catch (error) {
-      console.error("Error fetching channels:", error);
       throw error;
     }
   },

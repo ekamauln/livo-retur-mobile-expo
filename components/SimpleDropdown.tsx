@@ -31,17 +31,15 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({
 
   const loadItems = useCallback(async () => {
     try {
-      console.log(`Loading items for ${label}...`);
       setLoading(true);
       const fetchedItems = await fetchItems();
-      console.log(`Fetched ${fetchedItems.length} items for ${label}`);
       setItems(fetchedItems);
-    } catch (error) {
-      console.error(`Error fetching items for ${label}:`, error);
+    } catch {
+      // Handle error silently
     } finally {
       setLoading(false);
     }
-  }, [fetchItems, label]);
+  }, [fetchItems]);
 
   useEffect(() => {
     loadItems();

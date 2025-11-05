@@ -60,9 +60,7 @@ export default function AddReturn() {
 
   const fetchStores = useCallback(async () => {
     try {
-      console.log("Fetching stores...");
       const response = await returnMobileApi.fetchStores();
-      console.log("Stores response:", JSON.stringify(response, null, 2));
 
       if (response.success) {
         // Handle different possible response structures
@@ -72,7 +70,6 @@ export default function AddReturn() {
         } else if (Array.isArray(response.data)) {
           stores = response.data;
         } else {
-          console.log("Unexpected stores response structure:", response);
           return [];
         }
 
@@ -82,10 +79,8 @@ export default function AddReturn() {
           name: store.name,
         }));
       }
-      console.log("Stores response not successful:", response);
       return [];
     } catch (error) {
-      console.error("Error fetching stores:", error);
       Alert.alert(
         "Error",
         `Failed to fetch stores: ${error instanceof Error ? error.message : "Unknown error"}`
@@ -96,9 +91,7 @@ export default function AddReturn() {
 
   const fetchChannels = useCallback(async () => {
     try {
-      console.log("Fetching channels...");
       const response = await returnMobileApi.fetchChannels();
-      console.log("Channels response:", JSON.stringify(response, null, 2));
 
       if (response.success) {
         // Handle different possible response structures
@@ -108,7 +101,6 @@ export default function AddReturn() {
         } else if (Array.isArray(response.data)) {
           channels = response.data;
         } else {
-          console.log("Unexpected channels response structure:", response);
           return [];
         }
 
@@ -118,10 +110,8 @@ export default function AddReturn() {
           name: channel.name,
         }));
       }
-      console.log("Channels response not successful:", response);
       return [];
     } catch (error) {
-      console.error("Error fetching channels:", error);
       Alert.alert(
         "Error",
         `Failed to fetch channels: ${error instanceof Error ? error.message : "Unknown error"}`
@@ -154,15 +144,15 @@ export default function AddReturn() {
               setSelectedChannel(null);
               setSelectedStore(null);
               setErrors({});
-              router.back();
+              // Navigate back to index with refresh parameter
+              router.push("/?refresh=true");
             },
           },
         ]);
       } else {
         Alert.alert("Error", response.message || "Failed to create return");
       }
-    } catch (error) {
-      console.error("Error creating return:", error);
+    } catch {
       Alert.alert("Error", "Failed to create return. Please try again.");
     } finally {
       setSubmitting(false);
