@@ -144,7 +144,7 @@ export default function App() {
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900">
-      <View className="bg-neutral-900 px-4 py-3 border-b border-neutral-800">
+      <View className="bg-neutral-900 px-4 py-3 border-b border-neutral-800 mb-4">
         <View className="flex-row items-center justify-between mb-3">
           <Text className="text-2xl font-bold text-neutral-100">Returns</Text>
           <Pressable
