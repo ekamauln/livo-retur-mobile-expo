@@ -149,7 +149,7 @@ export default function App() {
           <Text className="text-2xl font-bold text-neutral-100">Returns</Text>
           <Pressable
             onPress={() => router.push("./add-return" as any)}
-            className="px-4 py-2 bg-blue-600 rounded-lg active:bg-blue-700"
+            className="px-4 py-2 bg-neutral-600 rounded-lg active:bg-neutral-700"
           >
             <Text className="text-white font-medium">Add Return</Text>
           </Pressable>
