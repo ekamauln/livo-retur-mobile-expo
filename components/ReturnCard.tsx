@@ -21,7 +21,7 @@ export const ReturnCard: React.FC<ReturnCardProps> = ({ item, onPress }) => {
   return (
     <Pressable
       onPress={() => onPress?.(item)}
-      className="bg-neutral-900 mx-4 mb-3 p-4 rounded-lg shadow-sm border border-gray-500 active:bg-gray-50"
+      className="bg-neutral-900 mx-4 mb-3 p-4 rounded-lg shadow-sm border border-neutral-500 active:bg-neutral-600"
     >
       <View className="flex-row justify-between items-center mb-2">
         <Text className="text-lg font-semibold text-neutral-300 flex-1">
